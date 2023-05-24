@@ -1,0 +1,116 @@
+#include <bits/stdc++.h>
+using namespace std;
+class Mobile{
+	public:
+		string brand;   //loai dien thoai
+		int battery;    //pin
+	    string inbox ;  //tin nhan den
+	    string sent ;   //tin da gui
+	    bool power;     //co dang bat hay khong
+		string drafts;  // tin nhap
+		Mobile(){ 														//khoi tao trong
+			brand="smartphone";
+			battery = 100;
+	        drafts = "";
+	        inbox = "";
+	        sent = "";
+	        power = false;
+		}
+		Mobile(string brand,int battery,bool power){				   //khoi tao gom % pin va tinh trang cua may
+			this->brand=brand;
+			this->battery = battery;
+	        drafts = "";
+	        inbox = "";
+	        sent = "";
+	        this->power = power;
+		}
+		bool check_power(){   											// kiem tra xem dien thoa bat hay tat
+	        return power;
+	    }
+	     void turn_on(){       											//bat dien thoai
+	        power = true;
+	    }
+	    void turn_off(){      											//tat dien thoai
+	        power = false;
+	    }
+	    void charge_battery(){ 											//sac dien thoai len 1%
+	        if (battery = 100)
+	        	cout<<"\nPin da day";
+	        else
+	        if (power)
+	            battery += 1;
+	        else{
+				cout<<"\n"<<brand<<" dang duoc mo de thuc hien sac may ";
+		        turn_on();
+		        battery += 1;
+		    }
+	    }
+	    void receive_message(string message){							//Nhan va luu tin nhan den
+	        if (power){
+	            inbox += message;
+	           	battery -= 1;
+	           }
+	        else {
+				cout<<"\n"<<brand<<" dang duoc mo de thuc hien nhan tin nhan ";
+		        turn_on();
+		        inbox += message;
+	           	battery -= 1;
+	           }
+	    }
+	    void compose_message(string message){							//soan tin nhan
+	        if (power){
+	            drafts += message;
+	            battery -= 1;
+	    	}
+	    	else {
+				cout<<"\n"<<brand<<" dang duoc mo de thuc hien soan tin nhan ";
+		    	turn_on();
+		    	drafts += message;
+	            battery -= 1;
+	        }
+	    }
+	    void send_message( string message ){      						//gui va luu tin nhan di
+	        if (power){
+	            receive_message(message);
+	            sent += message;
+	            drafts =  " ";
+	            battery -= 1;        
+	        }
+	        else {
+				cout<<"\n"<<brand<<" dang duoc mo de thuc hien gui tin nhan ";
+		        turn_on();
+		        receive_message(message);
+	            sent += message;
+	            drafts =  " ";
+	            battery -= 1;
+			}
+	    }
+	    void view_inbox(){													//xem tin nhan 
+	        if (power)
+	            cout<<"\nInbox of "<<brand<<" : "<<inbox;
+	    }
+	    void view_sent(){													//xem tin nhan minh gui
+	        if (power)
+	            cout<<"\nInbox of "<<brand<<" : "<<sent;
+		}
+		void display(){
+			cout<<"\n--------------------------------------\n";
+			cout<<"Thong tin dien thoai:";
+			cout<<"\n\t\tBrand :"<<brand;
+			cout<<"\n\t\tPower :"<<power;
+			cout<<"\n\t\tBattery :"<<battery ;
+			cout<<"\n\t\tDrafts :"<<drafts;
+			cout<<"\n\t\tInbox :"<<inbox;
+	        cout<<"\n\t\tSent: "<<sent;
+		}
+};
+main(){
+	Mobile a("nokia",30,true);
+	Mobile b("iphone",50,0 );
+	a.compose_message("Hello iPhone, this is Nokia.");
+	a.send_message(a.drafts);
+	b.receive_message(a.sent) ;
+	b.view_inbox();
+	a.display();
+	b.display();
+}

@@ -1,0 +1,162 @@
+#include <bits/stdc++.h>
+using namespace std;
+class HoaDon{
+	string TenHD;
+	string Ngay;
+	public:
+		HoaDon(string t,string n){
+			this->TenHD=t;
+			this->Ngay=n;
+		}
+		HoaDon(){
+			
+		}
+		virtual void display(){
+			cout<<"\nTenHD: "<<TenHD;
+			cout<<"\nNgay tao HD: "<<Ngay;
+		}
+		virtual void input(){
+			cout<<"\nNhap ten hoa don: ";cin>>TenHD;
+			cout<<"Nhap ngay tao hoa don: ";cin>>Ngay;
+		}
+		virtual long tinhtien(){
+		
+		}
+};
+class HDdien:public HoaDon{
+	int socu;
+	int somoi;
+	public:
+		HDdien(){
+		}
+		HDdien(string t,string ngay,int o,int n):HoaDon(t,ngay){
+			this->socu=o;
+			this->somoi=n;
+		}
+		void input(){
+			HoaDon::input();
+			cout<<"So cu: ";cin>>socu;
+			cout<<"So moi: ";cin>>somoi;
+		}
+		long tinhtien(){
+			int t=somoi-socu;	
+			if (t<=100) return t*1000;
+			else{
+				if (t<=200) return 100000+(t-100)*2000;
+				else return 300000+(t-200)*3000; 
+			}
+		}
+		void display(){
+			cout<<"\n------------------------------------";
+			HoaDon::display();
+			cout<<"\nSo dien su dung : "<<somoi-socu;
+			cout<<"\nTien dien la: "<<tinhtien();
+		}
+};
+class HDnuoc:public HoaDon{
+	int socu;
+	int somoi;
+	int loai; 
+	public:
+		HDnuoc(){
+		}
+		HDnuoc(string t,string ngay,int o,int n,int l):HoaDon(t,ngay){
+			this->socu=o;
+			this->somoi=n;
+			this->loai=l;
+		}
+		void input(){
+			HoaDon::input();
+			cout<<"So cu: ";cin>>socu;
+			cout<<"So moi: ";cin>>somoi;
+			cout<<"Loai: ";cin>>loai; 
+		}
+		long tinhtien(){
+			int t=somoi-socu;
+			if (loai==1) return t*10000;
+			else{
+				if (loai==2) return t*5000;
+				else return t*1000; 
+			}
+		}
+		void display(){
+			cout<<"\n------------------------------------";
+			HoaDon::display();
+			cout<<"\nLoai hoa don la : "<<loai;
+			cout<<"\nSo dien su dung : "<<somoi-socu;
+			cout<<"\nTien nuoc la: "<<tinhtien();
+		}
+};
+class HDtieudung:public HoaDon{
+	int soluong;
+	int dongia;
+	int giamgia;
+	int loaigg;
+	public:
+		HDtieudung(){
+		}
+		HDtieudung(string t,string ngay,int sl,int dg,int gg,int l):HoaDon(t,ngay){
+			this->soluong=sl;
+			this->dongia=dg;
+			this->giamgia=gg;
+			this->loaigg=l;
+		}
+		void input(){
+			HoaDon::input();
+			cout<<"Nhap so luong san pham: ";cin>>soluong;
+			cout<<"Nhap don gia san pham: ";cin>>dongia;
+			cout<<"Nhap so giam gia san pham: ";cin>>giamgia;
+			cout<<"Nhap loai giam gia san pham: ";cin>>loaigg;
+		}
+		long tinhtien(){
+			if (loaigg==1) 
+				return soluong*dongia*((100-giamgia)/100);
+			else return soluong*dongia-giamgia;
+		}
+		void display(){
+			cout<<"\n------------------------------------";
+			HoaDon::display();
+			cout<<"\nSo luong san pham : "<<soluong;
+			cout<<"\nDon gia cua san pham : "<<dongia;
+			cout<<"\ngiam gia :";
+			if (loaigg==1) cout<<giamgia;
+			else cout<<giamgia<<"%";
+			cout<<"\nso tien cua HD tieu dung la : "<<tinhtien();
+		}
+};
+class listHoaDon{
+	HoaDon**hd;
+	int len;
+public:
+	void Nhap(){
+		cout << "\n Ban co bao nhieu hoa don : " ; cin >> len;
+    hd = new HoaDon*[len];
+    for ( int i = 0 ; i < len ; i++){
+        cout << "  hoa don thu " << i + 1 << " la gi ? ( 1 : Dien , 2 : Nuoc , khac : Tieu dung) ";
+        int loai;
+        cin >> loai;
+        if ( loai ==1 ) {
+            hd[i] = new HDdien();
+            hd[i]-> input();
+        }
+        else 
+			if (loai==2){
+	            hd[i] = new HDnuoc();
+	            hd[i] -> input();
+	        }
+	        else {
+	            hd[i] = new HDtieudung();
+	            hd[i] -> input();
+	        }
+    }
+    cout<<endl;
+    for ( int i = 0 ; i < len ; i++){
+        hd[i]->display() ;
+		cout<< endl;
+    }
+	}
+};
+main(){
+	listHoaDon l;
+	l.Nhap();
+}
